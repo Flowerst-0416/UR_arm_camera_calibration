@@ -1,0 +1,44 @@
+<launch>
+    <arg name="directory" default="$(dirname)/.."/>
+
+    <arg name="camera_intrinsic" default="0"/>
+
+    <arg name="camera_rect_intrinsic" default="0"/>
+    <arg name="hand_eye" default="0"/>
+    
+    <arg name="laser_cam" default="0"/>
+
+    <group if="$(eval arg('camera_intrinsic') == 1)">
+        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "0"/> 
+        <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
+        <rosparam file="$(dirname)/../cfg/trajectory_planner.yaml"/> 
+        <rosparam>
+            cameraTopic: "/ximea_cam/image_raw"
+        </rosparam>
+    </group>
+
+    <group if="$(eval arg('camera_rect_intrinsic') == 1)">
+        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "0)"/> 
+        <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
+        <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
+        <rosparam file="$(dirname)/../cfg/trajectory_planner.yaml"/>
+        <rosparam file="$(dirname)/../cfg/calib_params.yaml"/> 
+        <rosparam>
+            cameraTopic: "/blaser_cam/image_rect_color"
+        </rosparam>
+    </group>
+
+    <group if="$(eval arg('hand_eye') == 1)">
+        <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
+        <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
+        <rosparam file="$(dirname)/../cfg/calib_params.yaml"/> 
+    </group>
+
+    <group if="$(eval arg('laser_cam') == 1)">
+        <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
+        <rosparam>
+            cameraTopic: "/blaser_cam/image_rect_color"
+        </rosparam>
+    </group>
+
+</launch>
