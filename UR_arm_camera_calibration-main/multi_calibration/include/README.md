@@ -1,2 +1,0 @@
-BaseMotionPlanner Class: a base class template that provides low-level moveit interfacing and ROS communication for different kinds of calibration motion
-generateMotion(): Will generate motion plan for robot arm to perform the corresponding calibration motion based on given parameters, such as 4 sample per side for Camera calibration
