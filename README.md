@@ -221,12 +221,11 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
 
 ![Tag size example](images/tag_size_example.png)
 
-#### 2.2.2 Calibration Process
 
+#### 2.2.2 Tag Measurement
 - Getting the *camera to Tag* transform: 
     
     - Start the ximea camera node
-
 
     ```shell
     cd ~/calibration_ws
@@ -245,8 +244,6 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
 Now the **camera to Tag** transform can be viewed by echoing the **tf** rostopic.
 
 - Getting the *end-effector to Tag* transform: Use the CAD of your April tag holder and Camera holder to obtain the transform.
-- As a sanity check for the calculation, the tag position derived from your **end-effector to Tag** transform and from **end-effector-camera-tag** transform chains should be exactly the same.
-
 #### 2.2.3 Calibration Process
 After properly setting up the Apriltag pose estimation pipeline(that includes image undistortion and publishing updated rectified camera matrix), the **camera to Tag** transform should be available to you.
 

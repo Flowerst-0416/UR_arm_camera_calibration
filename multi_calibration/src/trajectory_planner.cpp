@@ -343,7 +343,10 @@ void CameraIntrinsicMotionPlanner::generateMotion(){
                     nextPose.position.y -= heightPositions[i];
                     nextPose.position.z += sidePositions[k];
 
-                    tf::quaternionEigenToMsg(orientations[l],nextPose.orientation);
+                    nextPose.orientation.x = orientations[l].coeffs()[0];
+                    nextPose.orientation.y = orientations[l].coeffs()[1];
+                    nextPose.orientation.z = orientations[l].coeffs()[2];
+                    nextPose.orientation.w = orientations[l].coeffs()[3];
 
                     std::vector<geometry_msgs::Pose> waypoints;
                     // waypoints.push_back(move_group->getCurrentPose().pose);
@@ -381,24 +384,6 @@ void CameraIntrinsicMotionPlanner::generateMotion(){
 
 }
 
-/**
- * @brief Construct a new Handeye Calibration Motion Planner Object
- * 
- * This is a derived class from Base Motion Planner
- * 
- * @param name_in pass in the MoveIt! manipulator group name
- * @param nh_ pass in a ROS node handle to the class
- * 
- * The param passed in will be passed to Base Motion Planner
- * 
- * In this constructor, 
- *  1) The class will collect necessary parameters from ROS parameter server
- *  2) It will initialize the robot to its home position
- * Handeye calibration specific:
- *  3)  Generate some angles candidates for collecting photos
- *       based on parameters passed in
- *  4) generateMotion() will be called and motion will be executed
- */
 HandEyeMotionPlanner::HandEyeMotionPlanner(std::string name_in,std::shared_ptr<ros::NodeHandle> nh_)\
 : BaseMotionPlanner(name_in,nh_){
     //Collect Parameters
@@ -442,16 +427,6 @@ HandEyeMotionPlanner::HandEyeMotionPlanner(std::string name_in,std::shared_ptr<r
     generateMotion();
 }
 
-/**
- * @brief This function will generate & execute motion plan for handeye calibration
- * 
- * This will generate motion plan that connects generated viewangles and order 
- * image_saving_node to save images when each pose is reached
- *
- * 
- * Note: This method is called inside the constructor
- * 
- */
 void HandEyeMotionPlanner::generateMotion(){
     ros::Publisher status_pub = nh->advertise<std_msgs::String>("execution_status", 1000);
     int totalPoints = numRadius*numVertArc*numPointsPerVertArc;
@@ -459,6 +434,19 @@ void HandEyeMotionPlanner::generateMotion(){
 
     ROS_INFO("Press Enter to start...\n");
     std::cin.get();
+
+
+    // geometry_msgs::Pose nextPose = origin;
+    // nextPose.position.y -= 0.20;
+    // std::vector<geometry_msgs::Pose> waypoints;
+    // // waypoints.push_back(move_group->getCurrentPose().pose);
+    // waypoints.push_back(nextPose);
+    // plan(waypoints);
+    // execute();
+
+    // ROS_INFO("Press Enter to start...\n");
+    // std::cin.get();
+
 
     for(int u = 0; u < numRadius; u++){
         for(int i = 0; i < numVertArc; i++){
@@ -482,10 +470,14 @@ void HandEyeMotionPlanner::generateMotion(){
                 q = Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX())
                     * Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ())
                     * Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitY());
-                
-                tf::quaternionEigenToMsg(q,nextPose.orientation);
+
+                nextPose.orientation.x = q.coeffs()[0];
+                nextPose.orientation.y = q.coeffs()[1];
+                nextPose.orientation.z = q.coeffs()[2];
+                nextPose.orientation.w = q.coeffs()[3];
 
                 std::vector<geometry_msgs::Pose> waypoints;
+                // waypoints.push_back(move_group->getCurrentPose().pose);
                 waypoints.push_back(nextPose);
 
                 currentPoint++;
@@ -499,15 +491,16 @@ void HandEyeMotionPlanner::generateMotion(){
                 }
 
                 if(plan(waypoints) && execute()){
+                    // ros::Duration(1).sleep();
 
                     std::stringstream ss;
-                    ss << "Radius "<<radiusList[u]<<" Waypoint at vertical degree "<<
-                        vertDegreeList[j]<<" and horizontal degree "<<horiDegreeList[i]<<" reached,";
+                    ss << "Radius "<<radiusList[u]<<" Waypoint at vertical degree "<<vertDegreeList[j]<<" and horizontal degree "<<horiDegreeList[i]<<" reached,";
                     ss << "total progress " << (currentPoint)/double(totalPoints)*100.0 <<"%.";
                     ROS_INFO("%s", ss.str().c_str());
                     
                 }
-
+                // ROS_INFO("Press Enter to start...\n");
+                // std::cin.get();
             }
         }
     }
@@ -519,24 +512,6 @@ void HandEyeMotionPlanner::generateMotion(){
 
 }
 
-/**
- * @brief Construct a new Laser-Camera Calibration Motion Planner Object
- * 
- * This is a derived class from Base Motion Planner
- * 
- * @param name_in pass in the MoveIt! manipulator group name
- * @param nh_ pass in a ROS node handle to the class
- * 
- * The param passed in will be passed to Base Motion Planner
- * 
- * In this constructor, 
- *  1) The class will collect necessary parameters from ROS parameter server
- *  2) It will initialize the robot to its home position
- * Laser-Camera calibration specific:
- *  3)  Generate some angles candidates for collecting photos
- *       based on parameters passed in
- *  4) generateMotion() will be called and motion will be executed
- */
 LaserCamMotionPlanner::LaserCamMotionPlanner(std::string name_in, std::shared_ptr<ros::NodeHandle> nh_)\
     : BaseMotionPlanner(name_in,nh_){
 
@@ -581,16 +556,6 @@ LaserCamMotionPlanner::LaserCamMotionPlanner(std::string name_in, std::shared_pt
     generateMotion();
 }
 
-/**
- * @brief This function will generate & execute motion plan for Laser-Camera calibration
- * 
- * This will generate motion plan that connects generated viewangles and order 
- * image_saving_node to save images when each pose is reached
- *
- * 
- * Note: This method is called inside the constructor
- * 
- */
 void LaserCamMotionPlanner::generateMotion(){
     ros::Publisher status_pub = nh->advertise<std_msgs::String>("execution_status", 1000);
     int totalPoints = numLinePerPlane * numPlaneAngles * numPlanePerCircle;
@@ -613,10 +578,14 @@ void LaserCamMotionPlanner::generateMotion(){
                 q = Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX())
                     * Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ())
                     * Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitY());
-                
-                tf::quaternionEigenToMsg(q,nextPose.orientation);
+
+                nextPose.orientation.x = q.coeffs()[0];
+                nextPose.orientation.y = q.coeffs()[1];
+                nextPose.orientation.z = q.coeffs()[2];
+                nextPose.orientation.w = q.coeffs()[3];
 
                 std::vector<geometry_msgs::Pose> waypoints;
+                // waypoints.push_back(move_group->getCurrentPose().pose);
                 waypoints.push_back(nextPose);
 
                 currentPoint++;
@@ -637,7 +606,8 @@ void LaserCamMotionPlanner::generateMotion(){
 
                     
                 }
-
+                // ROS_INFO("Press Enter to start...\n");
+                // std::cin.get();
             }
         }
     }

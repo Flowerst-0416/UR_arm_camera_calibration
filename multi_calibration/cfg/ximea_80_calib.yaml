@@ -1,41 +1,41 @@
 %YAML:1.0
 ---
 # Primary blaser camera (with Magsafe)
-# model_type: MEI
-# camera_name: camera
-# image_width: 2448
-# image_height: 1840
-# mirror_parameters:
-#    xi: 1.8516756874116116e+00
-# distortion_parameters:
-#    k1: -8.1988658236129097e-01
-#    k2: 6.3879257711668663e-02
-#    p1: 8.5244705461647498e-03
-#    p2: -8.1949134295897057e-03
-# projection_parameters:
-#    gamma1: 3.3459441827828582e+03
-#    gamma2: 3.3406052649685403e+03
-#    u0: 1.2074996866814947e+03
-#    v0: 8.7172321297820872e+02
-# width: 2448
-# height: 1840
-
-# Backup blaser camera (without Magsafe) with toolchanger
 model_type: MEI
 camera_name: camera
 image_width: 2448
 image_height: 1840
 mirror_parameters:
-   xi: 2.2233477162
+   xi: 1.8516756874116116e+00
 distortion_parameters:
-   k1: -0.8088886525
-   k2: -0.8067357586
-   p1: 0.0079433344
-   p2: -0.0037897510
+   k1: -8.1988658236129097e-01
+   k2: 6.3879257711668663e-02
+   p1: 8.5244705461647498e-03
+   p2: -8.1949134295897057e-03
 projection_parameters:
-   gamma1: 3811.1549321366
-   gamma2: 3805.6811535143
-   u0: 1221.7500158745
-   v0: 892.4705799546
+   gamma1: 3.3459441827828582e+03
+   gamma2: 3.3406052649685403e+03
+   u0: 1.2074996866814947e+03
+   v0: 8.7172321297820872e+02
 width: 2448
 height: 1840
+
+# Backup blaser camera (without Magsafe)
+# model_type: MEI
+# camera_name: camera
+# image_width: 2448
+# image_height: 1840
+# mirror_parameters:
+#    xi: 2.2233477162
+# distortion_parameters:
+#    k1: -0.8088886525
+#    k2: -0.8067357586
+#    p1: 0.0079433344
+#    p2: -0.0037897510
+# projection_parameters:
+#    gamma1: 3811.1549321366
+#    gamma2: 3805.6811535143
+#    u0: 1221.7500158745
+#    v0: 892.4705799546
+# width: 2448
+# height: 1840

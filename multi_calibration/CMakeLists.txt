@@ -89,10 +89,10 @@ find_package(PCL REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -154,7 +154,6 @@ add_executable(trajectory_planner_node
   src/trajectory_planner_node.cpp
   src/trajectory_planner.cpp
   src/plannerFactory.cpp
-  src/scanning_planner.cpp
 )
 
 add_executable(image_saving_node

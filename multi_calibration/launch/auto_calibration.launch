@@ -31,7 +31,7 @@
     <group if="$(eval arg('hand_eye') == 1)">
         <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
         <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
-        <rosparam file="$(dirname)/../cfg/calib_params.yaml"/> 
+        <rosparam file="$(dirname)/../cfg/calib_params.yaml"/>
     </group>
 
     <group if="$(eval arg('laser_cam') == 1)">

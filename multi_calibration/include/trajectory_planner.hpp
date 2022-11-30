@@ -10,7 +10,6 @@
 #include <tf/transform_listener.h>
 #include <iostream>
 #include "std_msgs/String.h"
-#include <eigen_conversions/eigen_msg.h>
 
 
 #include <moveit/move_group_interface/move_group_interface.h>

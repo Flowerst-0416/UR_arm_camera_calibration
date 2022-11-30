@@ -394,7 +394,7 @@ AprilTagDetectionArray TagDetector::detectTags (
       tf::poseStampedMsgToTF(pose, tag_transform);
       tf_pub_.sendTransform(tf::StampedTransform(tag_transform,
                                                  tag_transform.stamp_,
-                                                 image->header.frame_id,
+                                                 "/camera",
                                                  detection_names[i]));
     }
   }
