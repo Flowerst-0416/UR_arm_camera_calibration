@@ -280,18 +280,7 @@ source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" laser_cam:=1
 ```
 
-Run **rqt** in different terminal
-
 ```shell
-rqt
+cd ~/Calibration_ws/laser_calib
+rosrun multi_calibration laser_calib -i ./ -c ./laser_calib.yaml
 ```
-
-Go to Plugins -> Topics -> Message Publisher
-
-![Message Publisher](images/rqt2.png)
-
-In the Message Publisher panel switch to the `/execution_status` topic
-
-![Message Publisher Panel](images/rqt3.png)
-
-Publish at a rate you want and the image will be captured automatically at that rate.
