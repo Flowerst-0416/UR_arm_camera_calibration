@@ -96,13 +96,13 @@ For the Last one enable the auto_calibration:
 ```shell
 cd ~/calibration_ws
 source devel/setup.bash
-roslaunch multi_calib_ros auto_calibration.launch directory:="[file position]" camera_intrinsic:=1
+roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_intrinsic:=1
 ```
 
 #### 1.2.2 Calibration Process
 Go to the folder where images collected from last step are saved
 ```shell
-source blaser_ws/devel/setup.bash
+cd ~/Calibration_ws/intrinsic
 rosrun camera_model Calibration -w 7 -h 10 -s 5 -i ./ -v --camera-model mei #use package camera_model to perform calibration. 
 ```
 The camera model parameters will be saved to **camera_camera_calib.yaml**.
@@ -129,7 +129,7 @@ Launch the four terminals but instead of running auto_calibration in camera_intr
 ```shell
 cd ~/calibration_ws
 source devel/setup.bash
-roslaunch multi_calib_ros auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
+roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
 ```
 
 Go to the folder where images collected from last step are saved and run the pinhole calibration
@@ -147,7 +147,7 @@ To check the calibration result, run all the same four terminals with auto_calib
 ```shell
 cd ~/calibration_ws
 source devel/setup.bash
-roslaunch multi_calib_ros auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
+roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
 ```
 
 In another terminal window open rqt.
@@ -198,7 +198,7 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
      ```shell
     cd ~/calibration_ws
     source devel/setup.bash
-    roslaunch multi_calib_ros auto_calibration.launch hand_eye:=1
+    roslaunch multi_calibration auto_calibration.launch hand_eye:=1
 
     ```
 Now the **camera to Tag** transform can be viewed by echoing the **tf** rostopic.
@@ -252,7 +252,21 @@ and the config file. (**todo turn on lsd visualization**).
 
 In order to collect more image for laser calibration, please go to **cali_ws** and run the following code:
 
-First enable ximea driver:
+Open four terminal:
+For the First one, connect the arm:
+```shell
+cd ~/calibration_ws
+source devel/setup.bash
+roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=[robot ip]
+```
+
+For the Second one enable Moveit!:
+```shell
+cd ~/calibration_ws
+source devel/setup.bash
+roslaunch ur5e_moveit_config ur5e_moveit_planning_execution.launch
+```
+Enable ximea driver in a new terminal:
 ```shell
 cd ~/calibration_ws
 source devel/setup.bash
@@ -263,7 +277,7 @@ Next enable the auto_calibration in the laser_cam mode:
 ```shell
 cd ~/calibration_ws
 source devel/setup.bash
-roslaunch multi_calib_ros auto_calibration.launch directory:="[file position]" laser_cam:=1
+roslaunch multi_calibration auto_calibration.launch directory:="[file position]" laser_cam:=1
 ```
 
 Run **rqt** in different terminal
