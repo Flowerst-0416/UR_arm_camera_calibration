@@ -77,6 +77,8 @@ echo 'echo 0 > /sys/module/usbcore/parameters/usbfs_memory_mb' | sudo tee -a /et
 # if file /etc/rc.local does not exist
 printf '%s\n' '#!/bin/bash' 'echo 0 > /sys/module/usbcore/parameters/usbfs_memory_mb' | sudo tee /etc/rc.local; sudo chmod +x /etc/rc.local
 
+mkdir $HOME/Calibration_ws/intrinsic
+mkdir $HOME/Calibration_ws/intrinsic_rect
+mkdir $HOME/Calibration_ws/laser_calib
 
-
-
+cp $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_camera_calibration/cfg/laser_calib.yaml $HOME/Calibration_ws/laser_calib/laser_calib.yaml
