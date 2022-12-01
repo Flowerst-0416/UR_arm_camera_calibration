@@ -5,14 +5,14 @@ This repo combines camera intrinsics, hand-eye and camera-laser extrinsic calibr
 
 ## 0. Installation
 ### 0.1 Environment
-Ubuntu 18.04 with ROS [Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu). Comes with Python 2.7 and OpenCV 3.2
-Ubuntu 20.04 with ROS [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu). Comes with Python 3.8 and OpenCV 4.2.
+- Ubuntu 18.04 with ROS [Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu). Comes with Python 2.7 and OpenCV 3.2
+- Ubuntu 20.04 with ROS [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu). Comes with Python 3.8 and OpenCV 4.2.
 ### 0.2 Dependencies
 1. [blaser_ros Melodic](https://github.com/biorobotics/blaser_mapping/tree/master/blaser_ros) / [blaser_ros Noetic](https://github.com/biorobotics/blaser_mapping/tree/tina/add-ubuntu20-compatibility/blaser_ros)
 2. ximea_ros_cam (Install with the Blaser Dependencies)
 3. [Universal_Robots_ROS_Driver
 ](https://github.com/UniversalRobots/Universal_Robots_ROS_Driver)
-4. MoveIt  Melodic [Tutorials]](http://docs.ros.org/en/melodic/api/moveit_tutorials/html/index.html)
+4. MoveIt  Melodic [Tutorials](http://docs.ros.org/en/melodic/api/moveit_tutorials/html/index.html)
 / MoveIt Noetic [Tutorials](https://ros-planning.github.io/moveit_tutorials/)
 5. [apriltag_ros
 ](https://github.com/AprilRobotics/apriltag_ros)
@@ -24,7 +24,7 @@ Follow instructions in 0.3 to install other dependencies
 
 ### 0.3 Build Calibration Workspace 
 
-Download the install download scrip in the repo
+Download the [install](https://github.com/Flowerst-0416/UR_arm_camera_calibration/blob/main/install) download scrip in the repo
 
 To run the script,
 
