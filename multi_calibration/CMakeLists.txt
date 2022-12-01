@@ -164,6 +164,14 @@ add_executable(image_rect_node
   src/image_rect_node.cpp
 )
 
+add_executable(laser_calib
+  src/laser_calib.cpp
+  src/laser_calib_node.cpp
+  src/laser_stripe_detector.cpp
+  src/util/cv_click_handler.cpp)
+target_link_libraries(laser_calib ${catkin_LIBRARIES} ${OpenCV_LIBS}
+  ${PYTHON_LIBRARIES})
+
 target_link_libraries(trajectory_planner_node ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} ${Boost_LIBRARIES})
 target_link_libraries(image_saving_node ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS})
 target_link_libraries(image_rect_node ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS})
