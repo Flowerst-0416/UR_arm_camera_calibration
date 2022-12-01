@@ -44,7 +44,7 @@ The calibration workspace should contain the following repo in the src:
 * apriltag
 
 ### 0.4 Configuring ximea_ros_cam
-In `~/calibration_ws/src/ximea_ros_cam/launch/example_cam.launch` change the value parameter to the serial number of your ximea camera
+In `~/Calibration_ws/src/ximea_ros_cam/launch/example_cam.launch` change the value parameter to the serial number of your ximea camera
 
 `<param name="serial_no"       type="string" value="your-camera-serial-no" />`
 
@@ -69,32 +69,32 @@ Configure other camera params as needed
 
 #### 1.2.0 Configure the Calibration Environment
 
-To do the auto calibration, we need to firstly set the initial joint position for robot arm and the checker board origin position. To achieve that, go to `~/calibration_ws/src/multi_calibration/cfg/trajectory_planner.yaml` and change the **homePositions** and **bedOrigin**.
+To do the auto calibration, we need to firstly set the initial joint position for robot arm and the checker board origin position. To achieve that, go to `~/Calibration_ws/src/multi_calibration/cfg/trajectory_planner.yaml` and change the **homePositions** and **bedOrigin**.
 
 #### 1.2.1 Image Collection
 Open four terminal:
 For the First one, connect the arm:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=[robot ip]
 ```
 For the Second one enable Moveit!:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ur5e_moveit_config ur5e_moveit_planning_execution.launch
 ```
 For the Third one enable Ximea driver:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ximea_ros_cam example_cam.launch
 ```
 
 For the Last one enable the auto_calibration:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_intrinsic:=1
 ```
@@ -118,7 +118,7 @@ Be careful about what camera model you use. For a narrow FoV camera without huge
 * Is cx and cy reasonable? cx ~ width / 2, cy ~ height / 2
 * Is image height and width correct?
 
-Update the calibration result to `~/calibration_ws/src/multi_calibration/cfg/ximea_80_calib.yaml` 
+Update the calibration result to `~/Calibration_ws/src/multi_calibration/cfg/ximea_80_calib.yaml` 
 
 After we finish the **MEI** model, we need to do the camera calibration for **PINHOLE** model.
 
@@ -127,7 +127,7 @@ Then, we do the do the calibration in PINHOLE model:
 Launch the four terminals but instead of running auto_calibration in camera_intrinsic mode run it in camera_rect_intrinsic mode
 
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
 ```
@@ -139,13 +139,13 @@ source Blaser_ws/devel/setup.bash
 rosrun camera_model Calibration -w 7 -h 10 -s 5 -i ./ -v --camera-model PINHOLE #use package camera_model to perform calibration. 
 ```
 
-Update the pinhole calibration result (fx fy cx cy) to `rectCameraMatrix` in `~/calibration_ws/src/multi_calibration/cfg/calib_params.yaml`
+Update the pinhole calibration result (fx fy cx cy) to `rectCameraMatrix` in `~/Calibration_ws/src/multi_calibration/cfg/calib_params.yaml`
 
 #### 1.2.3 Result Checking
 To check the calibration result, run all the same four terminals with auto_calibration in camera_rect_intrinsic mode
 
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
 ```
@@ -188,7 +188,7 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
     - Start the ximea camera node
 
     ```shell
-    cd ~/calibration_ws
+    cd ~/Calibration_ws
     source devel/setup.bash
     roslaunch ximea_ros_cam example_cam.launch 
     ```
@@ -196,7 +196,7 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
     - In a new window run the auto_calibration.launch in handeye mode
 
      ```shell
-    cd ~/calibration_ws
+    cd ~/Calibration_ws
     source devel/setup.bash
     roslaunch multi_calibration auto_calibration.launch hand_eye:=1
 
@@ -255,27 +255,27 @@ In order to collect more image for laser calibration, please go to **cali_ws** a
 Open four terminal:
 For the First one, connect the arm:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ur_robot_driver <robot_type>_bringup.launch robot_ip:=[robot ip]
 ```
 
 For the Second one enable Moveit!:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ur5e_moveit_config ur5e_moveit_planning_execution.launch
 ```
 Enable ximea driver in a new terminal:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch ximea_ros_cam example_cam.launch
 ```
 
 Next enable the auto_calibration in the laser_cam mode:
 ```shell
-cd ~/calibration_ws
+cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" laser_cam:=1
 ```
