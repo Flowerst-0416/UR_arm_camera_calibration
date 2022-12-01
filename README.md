@@ -5,7 +5,8 @@ This repo combines camera intrinsics, hand-eye and camera-laser extrinsic calibr
 
 ## 0. Installation
 ### 0.1 Environment
-Use Ubuntu 18.04/20.04 with ROS [Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) / [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu).
+Ubuntu 18.04 with ROS [Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu). Comes with Python 2.7 and OpenCV 3.2
+Ubuntu 20.04 with ROS [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu). Comes with Python 3.8 and OpenCV 4.2.
 ### 0.2 Dependencies
 1. [blaser_ros Melodic](https://github.com/biorobotics/blaser_mapping/tree/master/blaser_ros) / [blaser_ros Noetic](https://github.com/biorobotics/blaser_mapping/tree/tina/add-ubuntu20-compatibility/blaser_ros)
 2. ximea_ros_cam (Install with the Blaser Dependencies)
@@ -23,54 +24,13 @@ Follow instructions in 0.3 to install other dependencies
 
 ### 0.3 Build Calibration Workspace 
 
-- ximea_ros_cam
+Download the install download scrip in the repo
+
+To run the script,
 
 ```shell
-cd ~
-mkdir -p ~/calibration_ws/src
-cd ~/calibration_ws/src
-git clone https://github.com/wavelab/ximea_ros_cam.git
-```
-
-- camera_model
-
-Download the folder from this [link](https://drive.google.com/drive/folders/1xBam90TTU8bbKEM8wfbRfDEYF7RcXm7B?usp=sharing), and place it in `~/calibration_ws/src`.
-
-- apriltag
-```shell
-cd ~/calibration_ws/src
-git clone https://github.com/AprilRobotics/apriltag.git
-```
-
-- Build the workspace
-
-```shell
-cd ~/calibration_ws
-catkin build
-```
-
-- Install MoveIt and UR Drivers for MoveIt
-
-```shell
-cd ~/calibration_ws/src
-mkdir ~/calibration_ws/src/src
-cd ~/calibration_ws/src/src
-git clone -b boost https://github.com/UniversalRobots/Universal_Robots_Client_Library.git src/Universal_Robots_Client_Library
-git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
-git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
-sudo apt update -qq
-rosdep update
-rosdep install --from-paths src --ignore-src -y
-cd ~/calibration_ws
-catkin build
-```
-
-- Install this calibration repo
-
-```shell
-cd ~/calibration_ws/src
-git clone https://github.com/biorobotics/UR_arm_camera_calibration.git
-catkin build
+chmod +x install
+./install
 ```
 
 catkin build several time (mostly three)

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+## Install script for mutil calibration tool box
+BLASER_DEPENDENCIES=$HOME/blaser_dependencies
+###
+
+mkdir -p $HOME/Calibration_ws/src
+mkdir -p $HOME/blaser_dependencies
+
+# Check ROS version and install Python libraries
+if [[ $ROS_DISTRO == 'melodic'* ]]; then
+  sudo apt-get install -y python-matplotlib python-numpy
+elif [[ $ROS_DISTRO == 'noetic'* ]]; then
+  sudo apt-get install -y python3-matplotlib python3-numpy
+else
+  echo "[ERROR] Unsupported ROS version '${ROS_DISTRO}'"
+  exit 1
+fi
+
+# Install dependencies
+# https://github.com/tbeu/matio
+cd $BLASER_DEPENDENCIES
+git clone git://git.code.sf.net/p/matio/matio
+cd matio
+./autogen.sh
+./configure
+make
+sudo make install
+
+# Install Ceres Solver 1.14
+# http://ceres-solver.org/installation.html
+cd $BLASER_DEPENDENCIES
+wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz
+sudo apt-get install -y libgoogle-glog-dev libgflags-dev libatlas-base-dev libsuitesparse-dev
+tar zxf ceres-solver-1.14.0.tar.gz
+mkdir ceres-bin
+cd ceres-bin
+cmake ../ceres-solver-1.14.0
+make -j8
+sudo make install
+
+# Install XIMEA camera Linux software package
+# https://www.ximea.com/support/wiki/apis/XIMEA_Linux_Software_Package
+cd $BLASER_DEPENDENCIES
+wget https://www.ximea.com/downloads/recent/XIMEA_Linux_SP.tgz
+tar xzf XIMEA_Linux_SP.tgz
+mv package ximea_linux_sp
+cd ximea_linux_sp
+sudo ./install
+
+## build UR5 robot driver & MOVEIT 
+mkdir $HOME/Calibration_ws/src/src
+cd $HOME/Calibration_ws/src/src
+git clone -b boost https://github.com/UniversalRobots/Universal_Robots_Client_Library.git src/Universal_Robots_Client_Library
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git src/Universal_Robots_ROS_Driver
+git clone -b calibration_devel https://github.com/fmauch/universal_robot.git src/fmauch_universal_robot
+sudo apt update -qq
+rosdep update
+rosdep install --from-paths src --ignore-src -y
+cd $HOME/Calibration_ws
+catkin build
+
+
+## build Calibration_ws(ximea_ros_cam & apriltag_ros)
+cd $HOME/Calibration_ws/src
+git clone https://github.com/Flowerst-0416/UR_arm_camera_calibration.git
+git clone https://github.com/wavelab/ximea_ros_cam.git
+git clone https://github.com/AprilRobotics/apriltag.git
+cd $HOME/Calibration_ws
+catkin build
+
+##########################################
+# Enable high speed USB and USB permission
+sudo adduser $USER dialout
+# if file /etc/rc.local already exists
+echo 'echo 0 > /sys/module/usbcore/parameters/usbfs_memory_mb' | sudo tee -a /etc/rc.local
+# if file /etc/rc.local does not exist
+printf '%s\n' '#!/bin/bash' 'echo 0 > /sys/module/usbcore/parameters/usbfs_memory_mb' | sudo tee /etc/rc.local; sudo chmod +x /etc/rc.local
+
+
+
+
