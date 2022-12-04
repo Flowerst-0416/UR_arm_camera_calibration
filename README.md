@@ -158,11 +158,16 @@ rqt
 
 Go to Plugins -> Visualization -> Image Viewer
 
-![Image Viewer](images/rqt1.png)
+<p align="center">
+    <img src="images/rqt1.png" alt="Image Viewer" width="800"/>
+</p>
+
 
 In the Image Viewer panel switch to the `blaser_cam/image_rect_node` topic, this would display the undistorted image. All the straight lines in real world should appear as perfectly straight on the image.
 
-![Image Viewer Panel](images/rqt0.png)
+<p align="center">
+    <img src="images/rqt0.png" alt="Image Viewer Panel" width="800"/>
+</p>
 
 ## 2. Hand-eye Calibration
 ![Flowchart](images/Hand_eye_calibration.png)
@@ -179,8 +184,9 @@ The key to fiducial marker pose estimation is a correct estimate of the fiducial
 
 Note: The tag size should not be measured from the outside of the tag. The tag size is defined as the distance between the detection corners, or alternately, the length of the edge between the white border and the black border. The following illustration marks the detection corners with red Xs and the tag size with a red arrow for a tag from the 48h12Custom tag family.
 
-![Tag size example](images/tag_size_example.png)
-
+<p align="center">
+    <img src="images/tag_size_example.png" alt="Tag size example" width="200"/>
+</p>
 
 #### 2.2.2 Tag Measurement
 - Getting the *camera to Tag* transform: 
