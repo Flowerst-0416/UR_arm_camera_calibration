@@ -1,14 +1,3 @@
-/**
- * @file image_rect_node.cpp
- * @author Yuchen Wu (wuyc@umich.edu)
- * @brief A node undistorts camera image
- * @version 1.0
- * @date 2022-05-23
- * 
- * @copyright Copyright (c) 2022
- * 
- */
-
 #include "ros/ros.h"
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>

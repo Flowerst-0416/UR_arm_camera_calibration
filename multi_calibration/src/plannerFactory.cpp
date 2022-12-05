@@ -1,13 +1,4 @@
-/**
- * @file plannerFactory.cpp
- * @author Yuchen Wu (wuyc@umich.edu)
- * @brief A planner factory for generating multiple motion planner
- * @version 1.0
- * @date 2022-05-29
- * 
- * @copyright Copyright (c) 2022
- * 
- */
+
 #include "plannerFactory.hpp"
 
 /**

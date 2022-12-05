@@ -1,13 +1,3 @@
-/**
- * @file trajectory_planner.cpp
- * @author Yuchen Wu (wuyc@umich.edu)
- * @brief The implemenation for multiple motion planner
- * @version 1.1
- * @date 2022-08-15
- * 
- * @copyright Copyright (c) 2022
- * 
- */
 #include "trajectory_planner.hpp"
 MOVEIT_CLASS_FORWARD(MoveGroupInterface);
 MOVEIT_CLASS_FORWARD(Plan);

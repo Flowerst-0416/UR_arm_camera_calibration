@@ -1,13 +1,4 @@
-/**
- * @file trajectory_planner_node.cpp
- * @author Yuchen Wu (wuyc@umich.edu)
- * @brief A node launching the trajectory planner
- * @version 1.0
- * @date 2022-05-29
- * 
- * @copyright Copyright (c) 2022
- * 
- */
+
 #include "ros/ros.h"
 #include "plannerFactory.hpp"
 
