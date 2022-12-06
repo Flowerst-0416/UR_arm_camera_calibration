@@ -305,3 +305,12 @@ cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch laser_cam:=2
 ```
+Then you can get the laser calibration result in ```cfg``` folder in ```calib_results.txt```. Then, when you relaunch the ```auto_calibration.launch``` with laser_cam:=3 you can see the laser calibration verification program. It will get the calibration data from ```calib_results.txt``` and show the following image.
+<p align="center">
+    <img src="images/laser_check.png" alt="Image Viewer Panel" width="500"/>
+</p>
+In this image, you can see all the data you collected and the predict laser plane. All red dot on the plane means a good calibration. 
+
+
+## 4. Arm-Arm Calibration
+Under developing
