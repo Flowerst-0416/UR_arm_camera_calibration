@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 import numpy as np
@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 import math
 import sys
+import os
+import glob
 
 def draw_frame(ax, R, t):
     axis_len = 0.05
@@ -22,7 +24,8 @@ def draw_frame(ax, R, t):
 
 
 # read plane parameters and laser points
-result_file = open(sys.argv[1])
+Home_path = os.path.expanduser('~') 
+result_file = open(Home_path +"/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/cfg/calib_results.txt")
 raw_data = result_file.readlines()
 plane_params = np.fromstring(raw_data[1].strip(), dtype=float, sep=',')
 print(plane_params)
