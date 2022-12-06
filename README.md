@@ -227,6 +227,7 @@ As a sanity check for the calculation, the tag position derived from your **end-
 <p align="center">
     <img src="images/Laser_Cali.png" alt="Flowchart" width="600"/>
 </p>
+
 ### 3.1 Hardware needed
 * UR5e robot arm
 * Camera holder([Example](https://drive.google.com/file/d/12sZWZGFeq9ehgpnKUAZS80BMfkZedMsY/view?usp=sharing))
