@@ -81,5 +81,5 @@ mkdir $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/intri
 mkdir $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/intrinsic_rect
 mkdir $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/laser
 
-cp $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/cfg/laser_calib.yaml $HOME/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/laser/laser_calib.yaml
+
 
