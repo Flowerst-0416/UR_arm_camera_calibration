@@ -100,7 +100,7 @@ roslaunch multi_calibration auto_calibration.launch directory:="[file position]"
 ```
 The motion of the robot arm will be like:
 <p align="center">
-    <img src="gifs/intr_motion.gif" alt="Image Viewer Panel" width="500"/>
+    <img src="gifs/int_motion.gif" alt="Image Viewer Panel" width="500"/>
 </p>
 
 #### 1.2.2 Calibration Process
