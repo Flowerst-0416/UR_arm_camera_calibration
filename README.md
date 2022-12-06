@@ -98,6 +98,10 @@ cd ~/Calibration_ws
 source devel/setup.bash
 roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_intrinsic:=1
 ```
+The motion of the robot arm will be like:
+<p align="center">
+    <img src="gifs/intr_motion.gif" alt="Image Viewer Panel" width="500"/>
+</p>
 
 #### 1.2.2 Calibration Process
 Go to the folder where images collected from last step are saved
@@ -142,32 +146,19 @@ rosrun camera_model Calibration -w 7 -h 10 -s 5 -i ./ -v --camera-model PINHOLE 
 Update the pinhole calibration result (fx fy cx cy) to `rectCameraMatrix` in `~/Calibration_ws/src/multi_calibration/cfg/calib_params.yaml`
 
 #### 1.2.3 Result Checking
-To check the calibration result, run all the same four terminals with auto_calibration in camera_rect_intrinsic mode
+To check the calibration result, run **auto_calibration.launch** again with **camera_intrinsic:=2** shown below.
 
 ```shell
 cd ~/Calibration_ws
 source devel/setup.bash
-roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_rect_intrinsic:=1
+roslaunch multi_calibration auto_calibration.launch directory:="[file position]" camera_intrinsic:=2
 ```
-
-In another terminal window open rqt.
-
-```shell
-rqt
-```
-
-Go to Plugins -> Visualization -> Image Viewer
+Then you can see the preset ```rqt``` window which shows both raw image and rect_image.
 
 <p align="center">
-    <img src="images/rqt1.png" alt="Image Viewer" width="800"/>
+    <img src="images/test1.png" alt="Image Viewer Panel" width="600"/>
 </p>
 
-
-In the Image Viewer panel switch to the `blaser_cam/image_rect_node` topic, this would display the undistorted image. All the straight lines in real world should appear as perfectly straight on the image.
-
-<p align="center">
-    <img src="images/rqt0.png" alt="Image Viewer Panel" width="800"/>
-</p>
 
 ## 2. Hand-eye Calibration
 ![Flowchart](images/Hand_eye_calibration.png)
@@ -176,7 +167,7 @@ In the Image Viewer panel switch to the `blaser_cam/image_rect_node` topic, this
 * UR robot arm
 * Camera holder([Example](https://drive.google.com/file/d/1i7l1ikb1o2ocoi0iMsCJhSHDmBsIzraE/view?usp=sharing))
 * April tag holder([Example](https://drive.google.com/file/d/12sZWZGFeq9ehgpnKUAZS80BMfkZedMsY/view?usp=sharing))
-* [Hand eye calibration ipynb](Hand_eye.ipynb)
+* [Hand eye calibration ipynb](Hand_eye.ipynb) (no need after update)
 
 ### 2.2 Calibration process
 #### 2.2.1 Tag Size Measurement
@@ -188,7 +179,11 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
     <img src="images/tag_size_example.png" alt="Tag size example" width="200"/>
 </p>
 
-#### 2.2.2 Tag Measurement
+
+
+
+#### 2.2.2 Calibration Process
+
 - Getting the *camera to Tag* transform: 
     
     - Start the ximea camera node
@@ -205,22 +200,33 @@ Note: The tag size should not be measured from the outside of the tag. The tag s
     cd ~/Calibration_ws
     source devel/setup.bash
     roslaunch multi_calibration auto_calibration.launch hand_eye:=1
-
     ```
-Now the **camera to Tag** transform can be viewed by echoing the **tf** rostopic.
 
-- Getting the *end-effector to Tag* transform: Use the CAD of your April tag holder and Camera holder to obtain the transform.
-#### 2.2.3 Calibration Process
 After properly setting up the Apriltag pose estimation pipeline(that includes image undistortion and publishing updated rectified camera matrix), the **camera to Tag** transform should be available to you.
 
 With the measurement of **camera to Tag** and **end-effector to Tag**, input them into 
-[Jupyter Notebook for Hand-eye calibration](https://drive.google.com/file/d/1x8It3NmqM_Qm07OM-dieFRudrayFTtfS/view?usp=sharing) and get the **EE to Camera** transform matrix.
+[Calibration yaml file](https://github.com/Flowerst-0416/UR_arm_camera_calibration/blob/main/multi_calibration/cfg/handeye_params.yaml) and get the **EE to Camera** transform matrix which will output to [Handeye result colletion file](https://github.com/Flowerst-0416/UR_arm_camera_calibration/blob/main/multi_calibration/cfg/handeye_result.yaml)
 
-#### 2.2.4 Result Checking
+#### 2.2.3 Result Checking
+
+After launch the ```auto_calibration.launch``` in handeye mode, an rviz will show out to help you evaluate the tag detection and measurement.
+
+<p align="center">
+    <img src="images/handeye_evl.png" alt="rviz window" width="600"/>
+</p>
+
+The calculattion result will also shown in the matplot which you can use it to compare with the predict value and do futher evaluation.
+
+<p align="center">
+    <img src="images/handeye_result_shown.png" alt="rviz window" width="600"/>
+</p>
+
 As a sanity check for the calculation, the tag position derived from your **end-effector to Tag** transform and from **end-effector-camera-tag** transform chains should be exactly the same.
 
 ## 3. Camera-laser extrinsics
-![Flowchart](images/Laser_Cali.png) 
+<p align="center">
+    <img src="images/Laser_Cali.png" alt="Flowchart" width="600"/>
+</p>
 ### 3.1 Hardware needed
 * UR5e robot arm
 * Camera holder([Example](https://drive.google.com/file/d/12sZWZGFeq9ehgpnKUAZS80BMfkZedMsY/view?usp=sharing))
@@ -256,7 +262,7 @@ give example config and dir), which will be used in the calibration later.
 To test these parameters, run `laser_stripe_detector` node with sample images
 and the config file. (**todo turn on lsd visualization**).
 
-In order to collect more image for laser calibration, please go to **cali_ws** and run the following code:
+In order to collect more image for laser calibration, please go to **Calibration_ws** and run the following code:
 
 Open four terminal:
 For the First one, connect the arm:
@@ -283,10 +289,18 @@ Next enable the auto_calibration in the laser_cam mode:
 ```shell
 cd ~/Calibration_ws
 source devel/setup.bash
-roslaunch multi_calibration auto_calibration.launch directory:="[file position]" laser_cam:=1
+roslaunch multi_calibration auto_calibration.launch laser_cam:=1
 ```
+The motion of the robot arm will be like:
+<p align="center">
+    <img src="gifs/laser_motion.gif" alt="Image Viewer Panel" width="500"/>
+</p>
 
+After collecting the image relaunch the ```auto_calibration.launch``` with laser_cam:=2. The filter program will automatically start detecting if there is any noise image. Then it will run the laser calibration program and output the result.
+
+**Important:** please paste the result of the intrinsics calibration into [laser_calib.yaml](https://github.com/Flowerst-0416/UR_arm_camera_calibration/blob/main/multi_calibration/cfg/laser_calib.yaml)
 ```shell
-cd ~/Calibration_ws/laser_calib
-rosrun multi_calibration laser_calib -i ./ -c ./laser_calib.yaml
+cd ~/Calibration_ws
+source devel/setup.bash
+roslaunch multi_calibration auto_calibration.launch laser_cam:=2
 ```
