@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
@@ -47,9 +48,13 @@ class HandEye(object):
 if __name__ == '__main__':
     ap = HandEye()
     ap.tf = 0
-    while (ap.tf == 0):
+    count = 0
+    while (ap.tf == 0 or count < 100):
         rospy.init_node('listener', anonymous=True)
         tf_result = rospy.Subscriber("/tf", TFMessage, ap.tf_cb)
+        if ap.tf != 0:
+            count += 1
+
     
 
     with open(os.path.expanduser("~/Calibration_ws/src/UR_arm_camera_calibration/multi_calibration/cfg/handeye_params.yaml"),'r') as file:

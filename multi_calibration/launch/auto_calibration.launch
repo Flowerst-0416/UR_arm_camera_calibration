@@ -19,9 +19,21 @@
         </rosparam>
     </group>
 
+    <group if="$(eval arg('camera_intrinsic') == 2)">
+        <arg name="directory" default="$(find multi_calibration)/intrinsic_rect"/>
+        <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
+        <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
+        <node name = "camera_intrinsic_v" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen" args = "--perspective-file $(find multi_calibration)/cfg/camera_intrinsic_v.perspective"/>
+        <rosparam file="$(dirname)/../cfg/calib_params.yaml"/> 
+        <rosparam>
+            cameraTopic: "/blaser_cam/image_rect_color"
+        </rosparam>
+    </group>
+
+
     <group if="$(eval arg('camera_rect_intrinsic') == 1)">
         <arg name="directory" default="$(find multi_calibration)/intrinsic_rect"/>
-        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "0)"/> 
+        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "0"/> 
         <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
         <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
         <rosparam file="$(dirname)/../cfg/trajectory_planner.yaml"/>
@@ -31,22 +43,28 @@
         </rosparam>
     </group>
 
+
     <group if="$(eval arg('hand_eye') == 1)">
         <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
+        <node pkg="multi_calibration" name="handeye" type="handeye.py" output="screen"/>
+        <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_calibration)/cfg/rviz_cfg_handeye.rviz" />
         <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
         <rosparam file="$(dirname)/../cfg/calib_params.yaml"/>
     </group>
 
     <group if="$(eval arg('laser_cam') == 1)">
         <arg name="directory" default="$(find multi_calibration)/laser"/>
-        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "0"/> 
+        <node name="trajectory_planner_node" pkg="multi_calibration" type="trajectory_planner_node" output="screen" args = "2"/> 
         <node name="image_saving_node" pkg="multi_calibration" type="image_saving_node" output="screen" args="$(arg directory)"/>
         <node name="image_rect_node" pkg="multi_calibration" type="image_rect_node" output="screen" args="$(find multi_calibration)/cfg/ximea_80_calib.yaml" />
         <rosparam file="$(dirname)/../cfg/trajectory_planner.yaml"/> 
         <rosparam file="$(dirname)/../cfg/calib_params.yaml"/> 
         <rosparam>
-            cameraTopic: "/blaser_cam/image_rect_color"
+            cameraTopic: "/ximea_cam/image_raw"
         </rosparam>
+    </group>
+        <group if="$(eval arg('laser_cam') == 2)">
+        <node name="foo" pkg="multi_calibration" type="laser.sh" output="screen" />
     </group>
 
 </launch>
